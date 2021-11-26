@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TUGAS 9 10</title>
+</head>
+
+<body>
+    <div id="app">
+        <input type="text" placeholder="Ketik kata kunci" v-model="newTitle" />
+        <ul>
+            <li v-for="item in filteredResources">
+                <a>{{item.title}}</a>
+            </li>
+        </ul>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script>
+        var app = new Vue({
+            el: "#app",
+            data: {
+                newTitle: '',
+                books: [
+                    { title: "Kalkulus Dasar", },
+                    { title: "Fisika Dasar" },
+                    { title: "Aljabar Linier Elementer" },
+                    { title: "Aljabar Abstrak" },
+                    { title: "Algoritma Pemrograman" },
+                ]
+            },
+            computed: {
+                filteredResources() {
+                    if (this.newTitle) {
+                        return this.books.filter((item) => {
+                            return this.newTitle.toLowerCase().split(' ').every(i => item.title.toLowerCase().includes(i))
+                        })
+                    } else {
+                        return this.books;
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

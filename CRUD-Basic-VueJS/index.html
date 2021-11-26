@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz 2</title>
+    <style>
+        li {
+            margin-top: 20px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="app">
+        <form>
+            <input type="text" v-model="name"></input>
+            <button @click="addUser">{{ btn }}</button>
+        </form>
+        <ul>
+            <li v-for="(user, index) in username"> {{ user.name }}
+                <button @click="editUser(user.name, index)">Edit</button> ||
+                <button v-on:click="deleteUser(index)">Delete</button>
+            </li>
+        </ul>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script>
+
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                name: "",
+                updateName: "",
+                username: [
+                    { name: "Muhammad Iqbal Mubarok" },
+                    { name: "Ruby Purwanti" },
+                    { name: "Faqih Muhammad" },
+                ],
+                btn: "Add"
+            },
+            methods: {
+                addUser: function (a) {
+                    if (this.btn == "Add") {
+                        if (this.name !== "") {
+                            this.username.push(
+                                { name: this.name })
+                        }
+                    } else if (this.btn == "Update") {
+                        this.username[this.updateName].name = this.name
+                        this.btn = "Add"
+                    }
+                    this.name = ""
+                    a.preventDefault()
+                },
+                editUser: function (user, index) {
+                    this.name = user
+                    this.btn = "Update"
+                    this.updateName = index
+                },
+                deleteUser: function (index) {
+                    this.username.splice(index, 1);
+                    confirm("anda yakin?");
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

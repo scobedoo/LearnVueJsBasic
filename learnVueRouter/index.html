@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tugas 14 VueRouter</title>
+</head>
+
+<body>
+    <div id="app">
+        <router-link to="/">Home</router-link>
+        <router-link to="/halaman1">Halaman 1</router-link>
+        <router-link to="/halaman2">Halaman 2</router-link>
+        <router-link to="/halaman3">Halaman 3</router-link>
+        <hr>
+        <router-view></router-view>
+    </div>
+
+
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+    <script type="module">
+        import { halaman1 } from './halaman1.js'
+        import { halaman2 } from './halaman2.js'
+        import { halaman3 } from './halaman3.js'
+        const Home = { template: '<h2>Ini Halaman Home</h2>' }
+        const routes = [
+            { path: '/', component: Home, alias: '/home' },
+            { path: '/halaman1', component: halaman1, },
+            { path: '/halaman2', component: halaman2, meta: { login: true } },
+            { path: '/halaman3', component: halaman3, meta: { login: true, admin: true } },
+            { path: '*', redirect: '/' }
+        ]
+        const router = new VueRouter({
+            routes
+        })
+        router.beforeEach((to, from, next) => {
+            if (to.matched.some(record => record.meta.login)) {
+                let auth = false;
+                let admin = false;
+                if (!auth) {
+                    alert('Halaman Ini hanya untuk user yang sudah login')
+                    next(false)
+                } else if (to.path == '/halaman3' && !admin) {
+                    alert('Halaman Ini Hanya untuk Admin')
+                    next(false)
+                } else {
+                    next()
+                }
+            }
+            else {
+                next()
+            }
+        })
+        var vm = new Vue({
+            el: '#app',
+            router,
+        })
+    </script>
+</body>
+
+</html>
